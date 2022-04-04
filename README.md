@@ -36,3 +36,11 @@ jobs:
 
 - `ltd_username` (required). The account username for the LTD service. Generally this is the org-wide GitHub Actions Secret, `ltd_username: ${{ secrets.LTD_USERNAME }}`. If `inputs.upload` is `false`, this can be left as an empty string.
 - `ltd_password` (required). The account password for the LTD service. Generally this is the org-wide GitHub Actions Secret, `ltd_username: ${{ secrets.LTD_PASSWORD }}`. If `inputs.upload` is `false`, this can be left as an empty string.
+
+## Developer guide
+
+This repository enables us to centrally maintain the GitHub Actions workflows for Sphinx/reStructuredText technotes through [reusable workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows).
+
+Create new releases using the GitHub Releases UI and assign a tag with a semantic version, including a `v` prefix. Choose the semantic version based on compatibility for users of this workflow. If existing technotes will no longer operate under a new version of this workflow, bump the major version to `v2`.
+
+When a release is made, a new major version tag (i.e. `v1`, `v2`) is also made or moved using [nowactions/update-majorver](https://github.com/marketplace/actions/update-major-version).
