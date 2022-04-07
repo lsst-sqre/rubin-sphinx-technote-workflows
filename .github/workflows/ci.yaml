@@ -60,7 +60,7 @@ jobs:
           ${{ inputs.build_command }}
 
       - name: Upload
-        if: ${{ inputs.upload }}
+        if: inputs.upload && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' )
         env:
           LTD_PASSWORD: ${{ secrets.ltd_password }}
           LTD_USERNAME: ${{ secrets.ltd_username }}

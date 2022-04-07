@@ -11,7 +11,7 @@ Usage example:
 ```yaml
 name: CI
 
-'on': [push, pull_request]
+'on': [push, pull_request, workflow_dispatch]
 
 jobs:
   call-workflow:
@@ -19,7 +19,6 @@ jobs:
     with:
       handle: sqr-065
       apt_packages: 'graphviz'
-      upload: ${{ github.event_name == 'push' }}
     secrets:
       ltd_username: ${{ secrets.LTD_USERNAME }}
       ltd_password: ${{ secrets.LTD_PASSWORD }}
@@ -30,7 +29,7 @@ jobs:
 - `handle` (string, required). The lower-cased document handle, used as the subdomain for publishing to the `lsst.io` site.
 - `apt_packages` (string, optional). The packages to install via `apt-get install` into the Ubuntu CI environment. For example, to install both `graphviz` and `imagemagick` use `apt_packages: 'graphviz imagemagick'`.
 - `build_command` (string, optional). The shell command run to build the document. By default, the command is `make html` so that you can add pre- and post-build steps through the `Makefile`. However, you can explicitly change the build script through this input if required.
-- `upload` (boolean, optional). A boolean flag to enable uploading the build to `lsst.io`. For example, to only upload from push events, use `upload: ${{ github.event_name == 'push' }}`. The default is to upload.
+- `upload` (boolean, optional). A boolean flag to enable uploading the build to `lsst.io`. The default is to upload. Disable uploads by setting upload: false`.
 
 ### Secrets
 
