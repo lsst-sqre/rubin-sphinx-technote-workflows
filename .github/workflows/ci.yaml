@@ -1,0 +1,68 @@
+name: CI
+
+'on':
+  workflow_call:
+    inputs:
+      handle:
+        description: 'The document handle (lower-case subdomain).'
+        required: true
+        type: string
+      build_command:
+        description: 'Shell command(s) to build the technote.'
+        default: 'make html'
+        required: false
+        type: string
+      upload:
+        description: 'Flag to enable uploads'
+        default: true
+        required: false
+        type: boolean
+      apt_packages:
+        description: 'Space-delimited list of apt-get packages to install before build (e.g. graphviz)'
+        default: ''
+        required: false
+        type: string
+    secrets:
+      ltd_username:
+        description: 'LTD username'
+        required: true
+      ltd_password:
+        description: 'LTD password'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # full history for metadata
+          submodules: true
+
+      - name: Install apt packages
+        if: ${{ inputs.apt_packages}}
+        run: sudo apt-get install -y ${{ inputs.apt_packages }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: Python install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install ltd-conveyor
+
+      - name: Build
+        run: |
+          ${{ inputs.build_command }}
+
+      - name: Upload
+        if: ${{ inputs.upload }}
+        env:
+          LTD_PASSWORD: ${{ secrets.ltd_password }}
+          LTD_USERNAME: ${{ secrets.ltd_username }}
+        run: |
+          ltd upload --gh --dir _build/html --product ${{ inputs.handle }}
