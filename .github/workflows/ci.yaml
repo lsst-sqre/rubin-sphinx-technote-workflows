@@ -1,33 +1,33 @@
 name: CI
 
-'on':
+"on":
   workflow_call:
     inputs:
       handle:
-        description: 'The document handle (lower-case subdomain).'
+        description: "The document handle (lower-case subdomain)."
         required: true
         type: string
       build_command:
-        description: 'Shell command(s) to build the technote.'
-        default: 'make html'
+        description: "Shell command(s) to build the technote."
+        default: "make html"
         required: false
         type: string
       upload:
-        description: 'Flag to enable uploads'
+        description: "Flag to enable uploads"
         default: true
         required: false
         type: boolean
       apt_packages:
-        description: 'Space-delimited list of apt-get packages to install before build (e.g. graphviz)'
-        default: ''
+        description: "Space-delimited list of apt-get packages to install before build (e.g. graphviz)"
+        default: ""
         required: false
         type: string
     secrets:
       ltd_username:
-        description: 'LTD username'
+        description: "LTD username"
         required: true
       ltd_password:
-        description: 'LTD password'
+        description: "LTD password"
         required: true
 
 jobs:
